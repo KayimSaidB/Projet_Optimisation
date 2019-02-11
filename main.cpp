@@ -1,7 +1,7 @@
+#include "min.hh"
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
-#include <vector> 
 #include <numeric>
 #include <cmath> 
 using namespace std; 
@@ -32,15 +32,17 @@ bool check_constraints(vector< vector<int> > b, vector<int> c,vector<int> x,vect
 }
 
 int main(){
-	vector<int> x;
-	vector<int> a;	
-	a.push_back(1);
-	a.push_back(1);
-	a.push_back(1);
-	x.push_back(1);
-	x.push_back(1);
-	x.push_back(1);
+	Min test = Min(4,3);
 
-	   std::cout << "The scalar product is: "
-              << function(a,x) <<endl;
+	// vector<int> x;
+	// vector<int> a;	
+	// a.push_back(1);
+	// a.push_back(1);
+	// a.push_back(1);
+	// x.push_back(1);
+	// x.push_back(1);
+	// x.push_back(1);
+
+	//    std::cout << "The scalar product is: "
+ //              << function(a,x) <<endl;
 }
