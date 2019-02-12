@@ -1,4 +1,4 @@
-function [X,S] = BNB(fun,x0,a,b,c,B,lb,ub,nonlcon)
+function [X,S,x] = BNB(fun,x0,lb,ub,nonlcon)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,34 +10,42 @@ S = fun(x0);
 
 %1er Relaxation
 
-[x,z,exitflag] = fmincon(fun,x0,a,b,B,lb,ub,nonlcon);
+[x,z,exitflag] = fmincon(fun,zeros(15,1),[],[],[],[],lb,ub,nonlcon);
 
 for i=1:size(x)
-    if isnumeric(x(i))
+    if isinteger(x(i))
         xstatue(i)=1;
+        g=5
     end
 end
-
-K = find(min(x) & xstatue==1);
-
+    Aeq=zeros(length(x0));
+    beq=zeros(length(x0),1);
+%while(all(xstatue)==0)    
+%K = find(min(x) & xstatue==0);
+min=1000
+indice=1
+n=length(x)
+for i=1:n
+   if( min>x(i) & xstatue(i)==0)
+       min=x(i)
+       indice=i
+   end
+end
+K=indice;
 if exitflag > 0 && all(xstatue)
     X=x;
     S=z;
-    disp('Solution Valeur entiere');
-    disp('x =',X);
-    disp('S=',S);
-    %break le while
-
-elseif S>z && exitflag >0
-    S = z;
+   
+else 
+   
     
-    %Cas x(K) = 0
-    x1=x0;
-    x1(K)=0;
-    
-    %Cas x(K) = 1
-    x2=x0;
-    x2(K)=1;
+    %Cas x(K) = 0 arrondi inf
+   K
+    Aeq(K,K)=1;
+    beq(K)=round(min(x));
+    min(x)
+    [X,z,exitflag] = fmincon(@mafonction,zeros(15,1),[],[],Aeq',beq,lb,ub,@contrainte);
+    %Cas x(K) = 1 arrondi sup
     
     
     
@@ -46,7 +54,6 @@ end
 
 
 
-
+%end
 
 end
-
