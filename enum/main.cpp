@@ -38,7 +38,7 @@ string to_string(Min &probleme)
 	{
 		for(int j = 0; j<probleme.nb_var; j++)
 		{
-			if(i==probleme.indice_max()) continue;
+			if(j==probleme.indice_max()) continue;
 			s+= to_string(probleme.contrainte_gauche[i][j].first) + "*" + to_string(probleme.contrainte_gauche[i][j].second) + "^X" + to_string(j) + " + ";
 		}
 		s+= "<= " + to_string(probleme.contrainte_droite[i]);
@@ -65,7 +65,7 @@ tree<Min> create_tree(std::string file_name)
 
 
 	Min tmp;
-
+	Min tmp2;
 	for(int i = 0; i<probleme.var_ub+1; i++)
 	{
 		cout<<""<<endl;
@@ -73,8 +73,22 @@ tree<Min> create_tree(std::string file_name)
 		tmp.first = false;
 		tmp.set_cont_droite(i);
 		tmp.set_out_val(i);
-		tr.append_child(it,tmp);
+		tmp2 = tmp;
+		two = tr.append_child(it,tmp);
 	}
+
+	for(int i = 0; i<probleme.var_ub+1; i++)
+	{
+
+		cout<<""<<endl;
+		tmp= tmp2;
+		tmp.first = false;
+		tmp.set_cont_droite(i);
+		tmp.set_out_val(i);
+		tr.append_child(two,tmp);
+	}
+
+	cout << tr.number_of_children(two);
 	// kptree::print_tree_bracketed(tr,cout);
 	return tr;
 }
@@ -113,7 +127,7 @@ void export_dot(tree<Min>& arbre)
 		else break;
 	}
 
-	for(int i = 1; i<4; i++) s+= "0->" + to_string(i) + "[label=\"X" + to_string(8) + "= " + to_string(i-1) + "\"]\n";
+	for(int i = 1; i<4; i++) s+= "0->" + to_string(i) + "[label=\"X" + to_string(0) + "= " + to_string(i-1) + "\"]\n";
 
 
 	file<<s;

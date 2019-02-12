@@ -186,7 +186,7 @@ void Min::print(ostream &flux)
 	{
 		for(int j = 0; j<nb_var; j++)
 		{
-			if(i==indice_max()) continue;
+			if(j==indice_max()) continue;
 			s+= to_string(contrainte_gauche[i][j].first) + "*" + to_string(contrainte_gauche[i][j].second) + "^X" + to_string(j) + " + ";
 		}
 		s+= "<= " + to_string(contrainte_droite[i]);
