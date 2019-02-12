@@ -1,0 +1,88 @@
+# -----
+# Nonlinear knapsack instance 
+
+#       Variables
+#         . Nbr of variables  :           15
+#         . Lower bounds      :    0.00000001    
+#         . Upper bounds      :    20.0000000    
+
+#       Constraints
+#         . Nbr of constraints  :           1
+#         . Coef Min          :    10.0000000    
+#         . Coef Max          :    1000.00000    
+#         . Basis Min         :    1.50000000    
+#         . Basis Max         :    3.00000000    
+
+#       Others
+#         . Tightness ratio   :   0.250000000    
+
+data;
+
+# Number of variables
+param NCols :=     15;
+
+# Variable lower bound 
+param l :=     0.000;
+
+# Variable upper bound 
+param b :=    20.000;
+
+# Objective coefficients 
+param a :=
+      1    4551.604
+      2    3813.621
+      3    1327.376
+      4     246.495
+      5    3691.064
+      6    1645.550
+      7    3164.133
+      8    3795.629
+      9    4968.773
+     10    1845.387
+     11    1242.864
+     12    4923.139
+     13    3629.921
+     14    3767.470
+     15    3258.661;
+
+# Constraint coefficients 
+param b :=
+      1       0.000
+      2       2.631
+      3      15.112
+      4       9.173
+      5      10.655
+      6       4.379
+      7       0.941
+      8      13.577
+      9      13.586
+     10      18.694
+     11       7.670
+     12      10.388
+     13      16.619
+     14       0.691
+     15       1.069;
+
+# Constraint basis 
+param c :=
+      1       2.295
+      2       2.507
+      3       1.512
+      4       2.075
+      5       1.600
+      6       2.126
+      7       2.530
+      8       2.383
+      9       2.896
+     10       2.769
+     11       2.290
+     12       1.638
+     13       2.481
+     14       2.124
+     15       2.552;
+
+# Right hand side 
+param B :=     
+      1       38925467648.0000;
+
+

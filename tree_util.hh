@@ -29,6 +29,17 @@
 
 #include <iostream>
 #include "tree.hh"
+#include "min.hh"
+
+
+
+
+std::ostream& operator<<(std::ostream &flux, Min& probleme)
+{
+
+	probleme.print(flux);
+	return flux;
+}
 
 namespace kptree {
 
@@ -48,6 +59,7 @@ template<class T>
 void print_tree_bracketed(const tree<T>& t, std::ostream& str) 
 	{
 	int headCount = t.number_of_siblings(t.begin());
+	// std::cout << headCount<<std::endl;
 	int headNum = 0;
 	for(typename tree<T>::sibling_iterator iRoots = t.begin(); iRoots != t.end(); ++iRoots, ++headNum) {
 		print_subtree_bracketed(t,iRoots,str);
@@ -70,7 +82,6 @@ void print_subtree_bracketed(const tree<T>& t, typename tree<T>::iterator iRoot,
 	else {
 		// parent
 		str << *iRoot;
-		str << "(";
 		// child1, ..., childn
 		int siblingCount = t.number_of_siblings(t.begin(iRoot));
 		int siblingNum;
@@ -80,10 +91,9 @@ void print_subtree_bracketed(const tree<T>& t, typename tree<T>::iterator iRoot,
 			print_subtree_bracketed(t,iChildren,str);
 			// comma after every child except the last one
 			if (siblingNum != siblingCount ) {
-				str << ", ";
+				str << "";
 				}
 			}
-		str << ")";
 		}
 	}
 

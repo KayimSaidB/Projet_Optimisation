@@ -1,48 +1,131 @@
 #include "min.hh"
+#include "tree_util.hh"
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
 #include <numeric>
 #include <cmath> 
 using namespace std; 
-int function(vector<int> x,vector<int>a){
 
-     return inner_product(a.begin(), a.end(), x.begin(), 0.0);
+string to_string(Min &probleme)
+{
+	string s = "";
 
+	if(probleme.out_val == 0.0 && probleme.first)
+	{
+		probleme.first = false;
+		s += "Min ";
+		for(int i = 0; i <probleme.nb_var-1; ++i)
+		{
+			s+= to_string(probleme.fonction_cout[i]) + "X" + to_string(i) + " + ";
+		}
+		s+= to_string(probleme.fonction_cout[probleme.nb_var-1]) + "X" + to_string(probleme.nb_var-1);
+	}
+	else
+	{
+		s+=to_string(probleme.out_val);
+		s += " + Min ";
+		for(int i = 0; i <probleme.nb_var-1; ++i)
+		{
+			if(i==probleme.indice_max()) continue;
+			s+= to_string(probleme.fonction_cout[i]) + "X" + to_string(i) + " + ";
+		}
+		s+= to_string(probleme.fonction_cout[probleme.nb_var-1]) + "X" + to_string(probleme.nb_var-1);
+	}
 
+	s += "\ncond. ";
+	for(int i = 0; i < probleme.nb_cont; ++i)
+	{
+		for(int j = 0; j<probleme.nb_var; j++)
+		{
+			if(i==probleme.indice_max()) continue;
+			s+= to_string(probleme.contrainte_gauche[i][j].first) + "*" + to_string(probleme.contrainte_gauche[i][j].second) + "^X" + to_string(j) + " + ";
+		}
+		s+= "<= " + to_string(probleme.contrainte_droite[i]);
+	}
+
+	return s;
 }
 
-bool check_constraints(vector< vector<int> > b, vector<int> c,vector<int> x,vector<int> bound,int m,int n,vector<int> ub,vector<int> lb){
-	// m nombre de contraintes et n taille du vecteru
-	int j,i;
-		for (j=0;j<n;j++) if (x[j]<lb[j] || x[j]>ub[j]) return false;
 
-	for (i=0;i<m;i++){
-		int sum=0;
-		
-	for (j=0;j<n;j++){
-		sum=sum+b[i][j]*pow(c[j],-x[j]);
+tree<Min> create_tree(std::string file_name)
+{
+	tree<Min> tr;
 
+	Min probleme = Min(file_name);
+	// cout << to_string(probleme);
+	tree<Min>::iterator it,one,two;
+	// it = tr.begin();
+	it = tr.insert(tr.begin(),probleme);
+	// two = tr.append_child(one,probleme);
+
+	// cout << tr.number_of_children(one);
+
+	// kptree::print_tree_bracketed(tr,cout);
+
+
+	Min tmp;
+
+	for(int i = 0; i<probleme.var_ub+1; i++)
+	{
+		cout<<""<<endl;
+		tmp = probleme;
+		tmp.first = false;
+		tmp.set_cont_droite(i);
+		tmp.set_out_val(i);
+		tr.append_child(it,tmp);
 	}
-	if (sum>bound[i]) return false;
-	}
-	
-
-	return true;
+	// kptree::print_tree_bracketed(tr,cout);
+	return tr;
 }
+
+
+void export_dot(tree<Min>& arbre)
+{
+
+	tree<Min>::breadth_first_iterator it;
+
+	it = arbre.begin();
+
+	// cout << *it<<endl;
+	ofstream file("enum.dot");
+	string s="";
+	s += "digraph L {\n";
+
+	s+= "0[label=\"";
+	s+= to_string(*it);
+	// int indice_max = it.data.indice_max();
+	s+= "\"]\n";
+
+	bool first = true;
+	int i = 1;
+	while(it!=arbre.end())
+	{
+		if(first) { first = false; it ++; continue;}
+		s+= to_string(i) + "[label=\"";
+		s+= to_string(*it);
+		s+= "\"]\n";
+		i++;
+		if(i<4)
+		{
+			it++;
+		}
+		else break;
+	}
+
+	for(int i = 1; i<4; i++) s+= "0->" + to_string(i) + "[label=\"X" + to_string(8) + "= " + to_string(i-1) + "\"]\n";
+
+
+	file<<s;
+	file<<"\n}";
+}
+
+
 
 int main(){
-	Min test = Min(4,3);
 
-	// vector<int> x;
-	// vector<int> a;	
-	// a.push_back(1);
-	// a.push_back(1);
-	// a.push_back(1);
-	// x.push_back(1);
-	// x.push_back(1);
-	// x.push_back(1);
+	std::cout.precision(10);
 
-	//    std::cout << "The scalar product is: "
- //              << function(a,x) <<endl;
+	tree<Min> arbre = create_tree("Data/expknap-15-3.nkp");
+	export_dot(arbre);
 }
