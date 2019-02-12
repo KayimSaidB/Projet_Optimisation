@@ -1,4 +1,4 @@
-function con=contrainte(x)
+function [con,ceq]=contrainte(x)
  b =         [4.852;
              0.269;
              7.663;
@@ -35,5 +35,5 @@ function con=contrainte(x)
             con=con+power(c(i),-x(i))*b(i);
         end
          B =     68291518464.0000;
-
+        ceq=[]
         con =con-B
