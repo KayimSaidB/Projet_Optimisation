@@ -26,7 +26,7 @@ min=1000
 indice=1
 n=length(x)
 for i=1:n
-   if( min>x(i) & xstatue(i)==0)
+   if( min>x(i) & xstatue(i)==0 & x(i)>0.1)
        min=x(i)
        indice=i
    end
@@ -36,14 +36,10 @@ if exitflag > 0 && all(xstatue)
     X=x;
     S=z;
    
-else 
-   
-    
-    %Cas x(K) = 0 arrondi inf
-   K
+else %Cas x(K) = 0 arrondi inf
+    K
     Aeq(K,K)=1;
-    beq(K)=round(min(x));
-    min(x)
+    beq(K)=round(min);
     [X,z,exitflag] = fmincon(@mafonction,zeros(15,1),[],[],Aeq',beq,lb,ub,@contrainte);
     %Cas x(K) = 1 arrondi sup
     
