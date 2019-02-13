@@ -1,5 +1,5 @@
 function [X,S,x] = BNB(fun,x0,lb,ub,nonlcon)
-%UNTITLED3 Summary of this function goes here
+%UNTITLED3 Summary of this funn goes here
 %   Detailed explanation goes here
 
 X = [];
